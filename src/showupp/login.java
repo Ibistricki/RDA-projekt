@@ -7,12 +7,17 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.awt.event.ActionEvent;
 
 public class login extends JFrame {
@@ -58,10 +63,10 @@ public class login extends JFrame {
 		lblUsername.setBounds(138, 11, 71, 28);
 		contentPane.add(lblUsername);
 		
-		textFielduUsername = new JTextField();
-		textFielduUsername.setBounds(138, 41, 144, 28);
-		contentPane.add(textFielduUsername);
-		textFielduUsername.setColumns(10);
+		JTextField textFieldUsername = new JTextField();
+		textFieldUsername.setBounds(138, 41, 144, 28);
+		contentPane.add(textFieldUsername);
+		textFieldUsername.setColumns(10);
 		
 		JLabel lblPassword = new JLabel("Password:");
 		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -73,24 +78,29 @@ public class login extends JFrame {
 		textFieldPassword.setBounds(138, 119, 144, 28);
 		contentPane.add(textFieldPassword);
 		
+		JComboBox<String> comboBoxRole = new JComboBox<>();
+		comboBoxRole.setModel(new DefaultComboBoxModel<>(new String[] {"Admin", "Posjetitelj", "Organizator"}));
+		comboBoxRole.setBounds(149, 181, 114, 22);
+		contentPane.add(comboBoxRole);
+		
 		JButton btnNewButton = new JButton("Sign up");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			String Username = textFieldUsername.getText();
 			String Role = (String) comboBoxRole.getSelectedItem();
-			String Password = textAreaPassword.getText();
+			String Password = textFieldPassword.getText();
 			
 			try {						
 		 	  Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			  Connection conn = DriverManager.getConnection 
-("jdbc:mysql://ucka.veleri.hr/?" +
+("jdbc:mysql://ucka.veleri.hr/ibistricki?" +
  "user=ibistricki&password=11");
 			  
-			  String sql = "INSERT INTO Roles VALUES(NULL,?,?,?,?);";
+			  String sql = "INSERT INTO Roles VALUES(NOT NULL,?,?,?);";
 			  PreparedStatement stmt = conn.prepareStatement(sql);
 			  stmt.setString(1,Username);
 			  stmt.setString(2, Password);
-			  stmt.setString(4, Role);
+			  stmt.setString(3, Role);
   			  stmt.execute();
 							
 			  conn.close();
@@ -106,13 +116,12 @@ public class login extends JFrame {
 			}
 		}
 	});
+		
+		
 		btnNewButton.setBounds(168, 214, 81, 23);
 		contentPane.add(btnNewButton);
 		
-		JComboBox<String> comboBoxRole = new JComboBox<>();
-		comboBoxRole.setModel(new DefaultComboBoxModel<>(new String[] {"Admin", "Posjetitelj", "Organizator"}));
-		comboBoxRole.setBounds(149, 181, 114, 22);
-		contentPane.add(comboBoxRole);
+		
 
 		
 		JLabel lblRole = new JLabel("Role:");
