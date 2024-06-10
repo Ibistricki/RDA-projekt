@@ -1,5 +1,0 @@
-INDEX VERSION 1.134+C:\Users\Ignac\Downloads\ShowuppFinal\.metadata\.plugins\org.eclipse.jdt.core
-2894849183.index
-1371249973.index
-745179019.index
-1865797976.index
